@@ -151,10 +151,29 @@
         font-size: 24px;
       }
     }
+
+    .gacha-title {
+      font-size: clamp(24px, 6vw, 36px);
+      color: #ebdbac;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 400px;
+      padding: 0 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .gacha-title::-webkit-scrollbar {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
+  <h1 class="gacha-title">By Melissa, Evan C., Evan L., Dara, Emma, Joesph, Elodie</h1>
   <div class="game-area">
     <div class="gacha-wrapper" id="gachaUI">
       <div class="draggable" id="draggableImage">
