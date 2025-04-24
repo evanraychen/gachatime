@@ -219,30 +219,31 @@
       height: 100dvh;
       overflow: hidden;
     }
+
     .overlay-text {
-  position: absolute;
-  top: 21%;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #ebdbac;
-  font-size: clamp(18px, 4vw, 18px);
-  font-weight: 600;
-  z-index: 1;
-  pointer-events: none;
-  white-space: normal; /* Allow text wrapping */
-  text-align: center;
-  max-width: 235px; /* Add a max width relative to parent */
-  word-break: break-word; /* Optional: break long words if needed */
-}
+      position: absolute;
+      top: 24.5%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #ebdbac;
+      font-size: clamp(20px, 4vw, 20px);
+      font-weight: 600;
+      z-index: 1;
+      pointer-events: none;
+      text-align: center;
+      white-space: nowrap;
+      max-width: none;
+      word-break: normal;
+    }
   </style>
 
 </head>
 
 <body>
-  <h1 class="gacha-title">*Drag the Ribbon Down*</h1>
+  <h1 class="gacha-title">By Melissa, Evan C., Evan L., Dara, Emma, Joseph, and Elodie</h1>
   <div class="game-area">
     <div class="gacha-wrapper" id="gachaUI">
-      <div class="overlay-text">By Melissa, Evan C., Evan L., Dara, Emma, Joseph, and Elodie</div>
+      <div class="overlay-text">*Drag the Ribbon Down*</div>
 
       <div class="draggable" id="draggableImage">
         <img src="Spinner.png" alt="Draggable" />
