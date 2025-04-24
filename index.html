@@ -41,7 +41,8 @@
     .gacha-wrapper {
       width: 100%;
       height: 100%;
-      border-radius: 10px;
+      border-radius: 20px;
+      border: 4px solid #80a5c0;
       background-image: url('GachaMachine.png');
       background-size: cover;
       background-position: center;
@@ -80,6 +81,8 @@
       height: 100%;
       max-height: 100%;
       border-radius: 10px;
+      border: 4px solid #80a5c0;
+
       background-color: white;
       position: absolute;
       top: 0;
@@ -96,7 +99,6 @@
       transition: opacity 0.4s ease, transform 0.4s ease;
       z-index: 3;
       overflow: hidden;
-      /* keep this */
     }
 
     #prizeDescription {
@@ -136,7 +138,7 @@
       width: 100%;
       padding-left: 15px;
       padding-right: 15px;
-      padding-bottom: 10px;
+      padding-bottom: 20px;
       max-height: 225px;
       overflow: hidden;
     }
@@ -194,27 +196,29 @@
     }
 
     .gacha-title {
-  font-size: clamp(14px, 5vw, 24px);
-  color: #ebdbac;
-  font-weight: 600;
-  margin-bottom: 15px;
-  text-align: center;
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  max-width: 300px;
-  width: 100%;
-  padding: 0 15px;
-  -webkit-overflow-scrolling: touch;
-}
+      font-size: clamp(14px, 5vw, 24px);
+      color: #ebdbac;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 300px;
+      width: 100%;
+      padding: 0 15px;
+      -webkit-overflow-scrolling: touch;
+    }
 
-.gacha-title::-webkit-scrollbar {
-  display: none;
-}
-html, body {
-  height: 100dvh;
-  overflow: hidden;
-}
+    .gacha-title::-webkit-scrollbar {
+      display: none;
+    }
+
+    html,
+    body {
+      height: 100dvh;
+      overflow: hidden;
+    }
   </style>
 </head>
 
@@ -312,7 +316,6 @@ html, body {
         gachaUI.style.opacity = "0";
         gachaUI.style.transform = "scale(0.95)";
 
-        // Show prize in order, cycle through
         const prize = prizes[currentIndex];
         document.getElementById("prizeTitle").textContent = prize.text;
         const prizeImg = document.getElementById("prizeImage");
