@@ -34,14 +34,14 @@
     .game-area {
       position: relative;
       width: 100%;
-      max-width: 400px;
+      max-width: 360px;
       aspect-ratio: 300 / 435;
     }
 
     .gacha-wrapper {
       width: 100%;
       height: 100%;
-      border-radius: 5px;
+      border-radius: 10px;
       background-image: url('GachaMachine.png');
       background-size: cover;
       background-position: center;
@@ -198,11 +198,12 @@
   color: #ebdbac;
   font-weight: 600;
   margin-bottom: 15px;
+  margin-right:20px;
   text-align: center;
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  max-width: 100vw;
+  max-width: 360px;
   width: 100%;
   padding: 0 15px;
   -webkit-overflow-scrolling: touch;
@@ -273,7 +274,7 @@ html, body {
     ];
 
     let currentIndex = 0;
-    const maxDragDistance = 245;
+    const maxDragDistance = 222;
     let defaultTop;
     let isDragging = false, startY, initialTop;
     let velocity = 0, acceleration = 1.0, damping = 0.85, position;
