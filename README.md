@@ -1,1 +1,1 @@
-https://uscwebdev.github.io/gachatime/gacha.html
+https://evanraychen.github.io/gachatime/index.html
