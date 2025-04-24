@@ -22,7 +22,7 @@
       align-items: center;
       flex-direction: column;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     .game-area {
@@ -35,7 +35,8 @@
     .gacha-wrapper {
       width: 100%;
       height: 100%;
-      border-radius: 10px;
+      border-top-left-radius: 5px; /* Round the top-left corner */
+      border-top-right-radius: 5px; /* Keep the top-right corner square */
       background-image: url('GachaMachine.png');
       background-size: cover;
       background-position: center;
@@ -162,13 +163,33 @@
       overflow-x: auto;
       overflow-y: hidden;
       max-width: 400px;
-      padding: 0 10px;
+      padding: 0 25px;
       -webkit-overflow-scrolling: touch;
     }
 
     .gacha-title::-webkit-scrollbar {
       display: none;
     }
+    .gacha-container {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gacha-title {
+  font-size: clamp(14px, 5vw, 24px); /* auto-size */
+  color: #ebdbac;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  max-width: 400px;
+}
   </style>
 </head>
 
