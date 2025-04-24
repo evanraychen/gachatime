@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gacha Machine</title>
-  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -14,8 +15,8 @@
     }
 
     body {
-      font-family: 'Courier Prime', monospace;
-      background-color:#8cb3cf;
+      font-family: 'Fredoka', sans-serif;
+      background-color: #8cb3cf;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -96,29 +97,41 @@
     }
 
     .placeholder-box h2 {
-      font-size: 5vw;
-      color: #222;
+      font-size: clamp(40px, 5vw, 40px);
+      color: #8bb3cf;
+      font-weight: 600;
       margin: 0.5em 0;
+      text-align: center;
     }
 
     .placeholder-box img {
-      width: 80%;
-      max-width: 200px;
-      border-radius: 8px;
-      margin: 15px 0;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      z-index: 1;
+      position: relative;
+      object-fit: contain;
     }
 
     .placeholder-box p {
-      font-size: 4vw;
-      color: #555;
+      font-size: clamp(16px, 4vw, 20px);
+      color: #444;
       user-select: text;
+      line-height: 1.5;
+      text-align: left;
+      width: 100%;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-bottom: 10px;
+      max-height: 225px;
+      overflow-y: auto;
     }
 
     .close-btn {
       position: absolute;
       top: 10px;
       right: 10px;
-      font-size: 6vw;
+      font-size: clamp(20px, 5vw, 28px);
+      color: #8bb3cf;
       background: none;
       border: none;
       cursor: pointer;
@@ -127,19 +140,20 @@
 
     @media (min-width: 600px) {
       .placeholder-box h2 {
-        font-size: 20px;
+        font-size: 28px;
       }
 
       .placeholder-box p {
-        font-size: 14px;
+        font-size: 18px;
       }
 
       .close-btn {
-        font-size: 20px;
+        font-size: 24px;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="game-area">
     <div class="gacha-wrapper" id="gachaUI">
@@ -162,30 +176,39 @@
     const closeBtn = document.getElementById("closeBtn");
 
     const prizes = [
-  {
-    image: "BurnoutBear.png",
-    text: "Burnout Bear",
-    description: "This cozy bear knows when it's time to rest. A reminder that taking breaks is essential!"
-  },
-  {
-    image: "SleepySeal.png",
-    text: "Sleepy Seal",
-    description: "Always napping, never slacking. The Sleepy Seal lives life at its own pace."
-  },
-  {
-    image: "WeepyWhale.png",
-    text: "Weepy Whale",
-    description: "Feeling feels is powerful! The Weepy Whale wears its heart on its sleeve (or fin)."
-  },
-  {
-    image: "DeviousDuck.png",
-    text: "Devious Duck",
-    description: "With a plan for every puddle, the Devious Duck brings chaos and charm wherever it waddles."
-  },
-];
+      {
+        image: "WeepyWhale.png",
+        text: "Weepy Whale",
+        description: `Weepy Whale is in a constant state of crashing out. He’s switched majors three times and is in a constant undecided limbo. Between stress, homesickness, and late-night talks about the meaning of life, he is usually in a puddle of his own tears. But that’s ok because he lives in the ocean.<br><br><strong>Lucky phrases:</strong> wait you’re gonna make me cry, guysssssss 🥺, *sniffle`,
+        width: "70%",
+        height: "auto"
+      },
+      {
+        image: "SleepySeal.png",
+        text: "Sleepy Seal",
+        description: `Majoring in marine biology but really just wants to nap. Sleepy Seal signed up for 8 a.m. classes, thinking she’d be “more productive,” but now she rolls straight out of bed and into the lecture hall (if she wakes up at all) holding an iced coffee. You can find her in her bed, napping after class late into the night. Sleepy Seal spends most of her money on late-night Malagang runs because all the dining halls are closed by the time she wakes up.<br><br><strong>Lucky phrases:</strong> I’m taking a nap, can you take notes for me, fuck it we ball`,
+        width: "80%",
+        height: "auto"
+      },
 
+      {
+        image: "BurnoutBear.png",
+        text: "Burnout Bear",
+        description: `This semester, Burnout Bear loaded up on 21 credits, three clubs, is in a research lab, and has an internship. Now, she stares into the abyss of her laptop screen, unsure if she’s studying or disassociating.<br><br><strong>Lucky phrases:</strong> tspmo, I’ll sleep later, fml, I’m about to crash out`,
+        width: "64%",
+        height: "auto"
+      },
+      {
+        image: "DeviousDuck.png",
+        text: "Devious Duck",
+        description: `Typical of a business major, Devious Duck is always sidequesting and doing things unrelated to his major. Devious Duck likes to party but calls it “networking.” Don’t be fooled though, Devious Duck is the president of their frat and is popular with the huzz, all while coasting by with a 3.9 GPA.<br><br><strong>Lucky phrases:</strong> let’s FTSU, work hard party harder, fuck it we ball`,
+        width: "50%",
+        height: "auto"
+      }
+    ];
 
-    const maxDragDistance = 245; // You can adjust this for different screen heights
+    let currentIndex = 0;
+    const maxDragDistance = 245;
     let defaultTop;
     let isDragging = false, startY, initialTop;
     let velocity = 0, acceleration = 1.0, damping = 0.85, position;
@@ -224,11 +247,17 @@
         gachaUI.style.opacity = "0";
         gachaUI.style.transform = "scale(0.95)";
 
-        const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
-        document.getElementById("prizeTitle").textContent = randomPrize.text;
-        document.getElementById("prizeImage").src = randomPrize.image;
-        document.getElementById("prizeImage").alt = randomPrize.text;
-        document.getElementById("prizeDescription").textContent = randomPrize.description;
+        // Show prize in order, cycle through
+        const prize = prizes[currentIndex];
+        document.getElementById("prizeTitle").textContent = prize.text;
+        const prizeImg = document.getElementById("prizeImage");
+        prizeImg.src = prize.image;
+        prizeImg.alt = prize.text;
+        prizeImg.style.width = prize.width;
+        prizeImg.style.height = prize.height;
+        document.getElementById("prizeDescription").innerHTML = prize.description;
+
+        currentIndex = (currentIndex + 1) % prizes.length;
 
         setTimeout(() => whiteBox.classList.add("visible"), 250);
       }
@@ -268,7 +297,6 @@
         gachaUI.style.opacity = "1";
         gachaUI.style.transform = "scale(1)";
         alreadyTriggered = false;
-
         velocity = -(position - defaultTop) / 10;
         applySpringEffect();
       }, 250);
@@ -278,4 +306,5 @@
     draggable.addEventListener("touchstart", startDrag);
   </script>
 </body>
+
 </html>
