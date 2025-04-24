@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gacha Machine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Courier Prime', monospace;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .game-area {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 300 / 435;
+    }
+
+    .gacha-wrapper {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background-image: url('GachaMachine.png');
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      position: relative;
+    }
+
+    .draggable {
+      width: 20%;
+      aspect-ratio: 1;
+      cursor: grab;
+      position: absolute;
+      left: 75%;
+      top: 14%;
+      transform: translateX(-50%);
+      transition: transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .draggable:hover {
+      transform: translateX(-50%) translateY(10px);
+    }
+
+    .draggable img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .placeholder-box {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background-color: white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+      text-align: center;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 3;
+    }
+
+    .placeholder-box.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .placeholder-box h2 {
+      font-size: 5vw;
+      color: #222;
+      margin: 0.5em 0;
+    }
+
+    .placeholder-box img {
+      width: 80%;
+      max-width: 200px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .placeholder-box p {
+      font-size: 4vw;
+      color: #555;
+      user-select: text;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 6vw;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @media (min-width: 600px) {
+      .placeholder-box h2 {
+        font-size: 20px;
+      }
+
+      .placeholder-box p {
+        font-size: 14px;
+      }
+
+      .close-btn {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-area">
+    <div class="gacha-wrapper" id="gachaUI">
+      <div class="draggable" id="draggableImage">
+        <img src="Spinner.png" alt="Draggable" />
+      </div>
+    </div>
+    <div class="placeholder-box" id="whiteBox">
+      <button class="close-btn" id="closeBtn">×</button>
+      <h2 id="prizeTitle"></h2>
+      <img id="prizeImage" alt="Prize">
+      <p id="prizeDescription"></p>
+    </div>
+  </div>
+
+  <script>
+    const draggable = document.getElementById("draggableImage");
+    const gachaUI = document.getElementById("gachaUI");
+    const whiteBox = document.getElementById("whiteBox");
+    const closeBtn = document.getElementById("closeBtn");
+
+    const prizes = [
+      { image: "BurnoutBear.png", text: "Burnout Bear" },
+      { image: "SleepySeal.png", text: "Sleepy Seal" },
+      { image: "WeepyWhale.png", text: "Weepy Whale" },
+      { image: "DeviousDuck.png", text: "Devious Duck" },
+    ];
+
+    const maxDragDistance = 130; // You can adjust this for different screen heights
+    let defaultTop;
+    let isDragging = false, startY, initialTop;
+    let velocity = 0, acceleration = 1.0, damping = 0.85, position;
+    let alreadyTriggered = false;
+
+    window.addEventListener("load", () => {
+      defaultTop = draggable.offsetTop;
+      position = defaultTop;
+    });
+
+    function startDrag(e) {
+      isDragging = true;
+      startY = e.type === "mousedown" ? e.clientY : e.touches[0].clientY;
+      initialTop = draggable.offsetTop;
+
+      document.addEventListener("mousemove", drag);
+      document.addEventListener("mouseup", stopDrag);
+      document.addEventListener("touchmove", drag, { passive: false });
+      document.addEventListener("touchend", stopDrag);
+    }
+
+    function drag(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      const moveY = e.type === "mousemove" ? e.clientY : e.touches[0].clientY;
+      let diff = moveY - startY;
+      let newTop = initialTop + diff;
+
+      newTop = Math.max(0, Math.min(newTop, maxDragDistance));
+      draggable.style.top = newTop + "px";
+      position = newTop;
+
+      if (newTop >= maxDragDistance && !alreadyTriggered) {
+        alreadyTriggered = true;
+        gachaUI.style.opacity = "0";
+        gachaUI.style.transform = "scale(0.95)";
+
+        const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
+        document.getElementById("prizeTitle").textContent = randomPrize.text;
+        document.getElementById("prizeImage").src = randomPrize.image;
+        document.getElementById("prizeImage").alt = randomPrize.text;
+        document.getElementById("prizeDescription").textContent =
+          `Congratulations on getting ${randomPrize.text}! This adorable friend is ready to join your collection.`;
+
+        setTimeout(() => whiteBox.classList.add("visible"), 250);
+      }
+    }
+
+    function stopDrag() {
+      isDragging = false;
+      document.removeEventListener("mousemove", drag);
+      document.removeEventListener("mouseup", stopDrag);
+      document.removeEventListener("touchmove", drag);
+      document.removeEventListener("touchend", stopDrag);
+      applySpringEffect();
+    }
+
+    function applySpringEffect() {
+      function animate() {
+        velocity += acceleration;
+        velocity *= damping;
+        position -= velocity;
+
+        if (position <= defaultTop) {
+          position = defaultTop;
+          velocity = 0;
+        }
+
+        draggable.style.top = position + "px";
+        if (Math.abs(velocity) > 0.5 || position !== defaultTop) {
+          requestAnimationFrame(animate);
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    closeBtn.addEventListener("click", () => {
+      whiteBox.classList.remove("visible");
+      setTimeout(() => {
+        gachaUI.style.opacity = "1";
+        gachaUI.style.transform = "scale(1)";
+        alreadyTriggered = false;
+
+        velocity = -(position - defaultTop) / 10;
+        applySpringEffect();
+      }, 250);
+    });
+
+    draggable.addEventListener("mousedown", startDrag);
+    draggable.addEventListener("touchstart", startDrag);
+  </script>
+</body>
+</html>
