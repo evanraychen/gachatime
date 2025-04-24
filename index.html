@@ -15,7 +15,7 @@
 
     body {
       font-family: 'Courier Prime', monospace;
-      background-color: #f4f4f4;
+      background-color:#8cb3cf;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -47,7 +47,7 @@
       aspect-ratio: 1;
       cursor: grab;
       position: absolute;
-      left: 75%;
+      left: 91%;
       top: 14%;
       transform: translateX(-50%);
       transition: transform 0.2s ease;
@@ -162,13 +162,30 @@
     const closeBtn = document.getElementById("closeBtn");
 
     const prizes = [
-      { image: "BurnoutBear.png", text: "Burnout Bear" },
-      { image: "SleepySeal.png", text: "Sleepy Seal" },
-      { image: "WeepyWhale.png", text: "Weepy Whale" },
-      { image: "DeviousDuck.png", text: "Devious Duck" },
-    ];
+  {
+    image: "BurnoutBear.png",
+    text: "Burnout Bear",
+    description: "This cozy bear knows when it's time to rest. A reminder that taking breaks is essential!"
+  },
+  {
+    image: "SleepySeal.png",
+    text: "Sleepy Seal",
+    description: "Always napping, never slacking. The Sleepy Seal lives life at its own pace."
+  },
+  {
+    image: "WeepyWhale.png",
+    text: "Weepy Whale",
+    description: "Feeling feels is powerful! The Weepy Whale wears its heart on its sleeve (or fin)."
+  },
+  {
+    image: "DeviousDuck.png",
+    text: "Devious Duck",
+    description: "With a plan for every puddle, the Devious Duck brings chaos and charm wherever it waddles."
+  },
+];
 
-    const maxDragDistance = 130; // You can adjust this for different screen heights
+
+    const maxDragDistance = 245; // You can adjust this for different screen heights
     let defaultTop;
     let isDragging = false, startY, initialTop;
     let velocity = 0, acceleration = 1.0, damping = 0.85, position;
@@ -211,8 +228,7 @@
         document.getElementById("prizeTitle").textContent = randomPrize.text;
         document.getElementById("prizeImage").src = randomPrize.image;
         document.getElementById("prizeImage").alt = randomPrize.text;
-        document.getElementById("prizeDescription").textContent =
-          `Congratulations on getting ${randomPrize.text}! This adorable friend is ready to join your collection.`;
+        document.getElementById("prizeDescription").textContent = randomPrize.description;
 
         setTimeout(() => whiteBox.classList.add("visible"), 250);
       }
