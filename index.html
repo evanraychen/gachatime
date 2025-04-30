@@ -35,7 +35,7 @@
       position: relative;
       width: 100%;
       max-width: 360px;
-      aspect-ratio: 300 / 435;
+      aspect-ratio: 2212 / 2547;
     }
 
     .gacha-wrapper {
@@ -235,16 +235,63 @@
       max-width: none;
       word-break: normal;
     }
+
+    .gacha-title-container {
+      width: 100%;
+      max-width: 340px;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .gacha-title-container::before,
+    .gacha-title-container::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 20px;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+   
+    .scrolling-title-track {
+      display: inline-flex;
+      animation: scrollLoop 15s linear infinite;
+    }
+
+    .scrolling-title {
+      color: #ebdbac;
+      font-weight: 600;
+      font-size: clamp(14px, 5vw, 24px);
+      padding: 0 15px;
+      white-space: nowrap;
+    }
+
+    @keyframes scrollLoop {
+      0% {
+        transform: translateX(0%);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
   </style>
 
 </head>
 
 <body>
-  <h1 class="gacha-title">By Melissa, Evan C., Evan L., Dara, Emma, Joseph, and Elodie</h1>
+  <div class="gacha-title-container">
+    <div class="scrolling-title-track">
+      <div class="scrolling-title">By Melissa, Evan C., Evan L., Dara, Emma, Joseph, and Elodie</div>
+      <div class="scrolling-title">By Melissa, Evan C., Evan L., Dara, Emma, Joseph, and Elodie</div>
+    </div>
+  </div>
   <div class="game-area">
     <div class="gacha-wrapper" id="gachaUI">
-      <div class="overlay-text">*Drag the Ribbon Down*</div>
-
       <div class="draggable" id="draggableImage">
         <img src="Spinner.png" alt="Draggable" />
       </div>
